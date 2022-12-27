@@ -3,7 +3,7 @@ name: NPM Package Publish
 on:
   workflow_call:
     secrets:
-      NPM_AUTH_TOKEN:
+      NPM_TOKEN:
         required: true
 
 jobs:
@@ -18,4 +18,4 @@ jobs:
 #       - run: npm test
       - uses: JS-DevTools/npm-publish@v1
         with:
-          token: ${{ secrets.NPM_AUTH_TOKEN }}
+          token: ${{ secrets.NPM_TOKEN }}

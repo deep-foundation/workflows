@@ -15,8 +15,8 @@ jobs:
         with:
           node-version: 14.15.0
       - run: npm clean-install
-      - run: npm run package:build
       - run: npm run test --if-present
+      - run: npm run package:build
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}

@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 14.15.0
-      - run: npm install
+      - run: npm clean-install
       - run: npm run package:build
       - run: npm run test --if-present
       - uses: JS-DevTools/npm-publish@v1

@@ -7,7 +7,7 @@ on:
         required: true
         
 env:
-  NODEJS_VERSION: 14.21.3
+  NODEJS_VERSION: 16.20.0
 
 jobs:
   publish:

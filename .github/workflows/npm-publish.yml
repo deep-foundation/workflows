@@ -17,6 +17,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{env.NODEJS_VERSION}}
+      - run: npm i -g npm@latest
       - run: npm clean-install
 #       - run: npm run test --if-present
       - run: npm run package:build

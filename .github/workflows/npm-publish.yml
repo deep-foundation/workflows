@@ -6,10 +6,15 @@ on:
       npm-token:
         required: true
     inputs:
-      build-script-name:
+      build-command:
         type: string
         required: false
-        default: "build"
+        default: "npm run build"
+      test-command:
+        type: string
+        required: false
+        default: "npm test --if-present"
+      
         
 env:
   NODEJS_VERSION: 16.20.0
@@ -30,13 +35,8 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-      - name: "Push package.lock json"
-        run: |
-          git add package-lock.json
-          git commit -m "update package-lock.json" || echo "No changes to commit"
-          git push origin main
-      - run: npm run ${{ inputs.build-script-name }} 
-#       - run: npm test --if-present
+      - run: ${{ inputs.build-command }} 
+      - run: ${{ inputs.test-command }}
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.npm-token }}

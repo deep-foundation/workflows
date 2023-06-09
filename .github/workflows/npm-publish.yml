@@ -3,8 +3,13 @@ name: NPM Package Publish
 on:
   workflow_call:
     secrets:
-      NPM_TOKEN:
+      npm-token:
         required: true
+    inputs:
+      build-script-name:
+        type: string
+        required: false
+        default: "build"
         
 env:
   NODEJS_VERSION: 16.20.0
@@ -30,11 +35,11 @@ jobs:
           git add package-lock.json
           git commit -m "update package-lock.json" || echo "No changes to commit"
           git push origin main
-      - run: npm run package:build
+      - run: npm run ${{ inputs.build-script-name }} 
 #       - run: npm test --if-present
       - uses: JS-DevTools/npm-publish@v1
         with:
-          token: ${{ secrets.NPM_TOKEN }}
+          token: ${{ secrets.npm-token }}
       - name: "npm version"
         run: npm version --allow-same-version $(node -p "require('./package.json').version")
       - name: "Push new version commit and tag"

@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: ${{env.NODE_VERSION}}
           registry-url: https://registry.npmjs.org/
+      - run: npm i -g npm@latest
       - name: Run npm install and push changes
         run: npm install
       - name: "Configure git"

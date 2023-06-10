@@ -6,7 +6,8 @@ on:
       generate-documentation-command:
         required: false
         type: string
-        default:  "npx typedoc src/main.ts"
+        default:  "npx --yes typedoc src/main.ts"
+        description: "The command that will be executed to generate documentation"
         
 permissions:
   contents: write

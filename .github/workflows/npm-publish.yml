@@ -27,6 +27,8 @@ jobs:
       id: check-is-version-updated
       with:
         path: package.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   main:
     runs-on: ubuntu-latest
     needs:

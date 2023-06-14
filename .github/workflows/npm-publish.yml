@@ -30,11 +30,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: echo ${{ steps.check-is-version-updated.outputs.has-updated }} 
+    outputs:
+      is-version-updated: ${{ steps.check-is-version-updated.outputs.has-updated }}
   main:
     runs-on: ubuntu-latest
     needs:
       - check-is-version-updated
-    if: ${{ needs.check-is-version-updated.steps.check-is-version-updated.outputs.has-updated }}
+    if: ${{ needs.check-is-version-updated.outputs.is-version-updated }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

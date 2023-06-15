@@ -20,8 +20,23 @@ env:
   NODEJS_VERSION: 16.20.0
 
 jobs:
+  check-is-version-updated:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: EndBug/version-check@v2.1.1
+      id: check-is-version-updated
+      with:
+        path: package.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: echo ${{ steps.check-is-version-updated.outputs.changed }} 
+    outputs:
+      is-version-updated: ${{ steps.check-is-version-updated.outputs.changed }}
   main:
     runs-on: ubuntu-latest
+    needs:
+      - check-is-version-updated
+    if: ${{ needs.check-is-version-updated.outputs.is-version-updated == 'true' }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

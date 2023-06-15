@@ -23,19 +23,21 @@ jobs:
   check-is-version-updated:
     runs-on: ubuntu-latest
     steps:
-    - id: check-is-version-updated
-      run: |
-        current_package_version=$(node -p "require('./package.json').version")
-        npm_package_version=$(npm view @${{ github.repository }} version)
-        
-        if [ "${current_package_version}" == "${npm_package_version}" ]; then
-            is_version_changed="false"
-        else
-            is_version_changed="true"
-        fi
-        echo "is-version-changed=${is_version_changed}" >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - id: check-is-version-updated
+        run: |
+          current_package_version=$(node -p "require('./package.json').version")
+          npm_package_version=$(npm view @${{ github.repository }} version)
 
-    - run: echo ${{ steps.check-is-version-updated.outputs.is-version-changed }} 
+          if [ "${current_package_version}" == "${npm_package_version}" ]; then
+              is_version_changed="false"
+          else
+              is_version_changed="true"
+          fi
+          echo "is-version-changed=${is_version_changed}" >> $GITHUB_OUTPUT
+
+      - run: echo ${{ steps.check-is-version-updated.outputs.is-version-changed }} 
     outputs:
       is-version-changed: ${{ steps.check-is-version-updated.outputs.is-version-changed }}
   main:

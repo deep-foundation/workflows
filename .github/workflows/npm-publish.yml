@@ -29,9 +29,9 @@ jobs:
         npm_package_version=(npm view @${{ github.repository }})
         
         if [ "${current_package_version}" == "${npm_package_version}" ]; then
-            is_version_changed=="false"
+            is_version_changed="false"
         else
-            is_version_changed=="true"
+            is_version_changed="true"
         fi
         echo "{is-version-changed}={${is_version_changed}}" >> $GITHUB_OUTPUT
 

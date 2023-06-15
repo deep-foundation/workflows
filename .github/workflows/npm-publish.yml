@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - check-is-version-updated
-    if: ${{ needs.check-is-version-updated.outputs.is-version-updated == 'true' }}
+    if: ${{ needs.check-is-version-updated.outputs.is-version-changed == 'true' }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

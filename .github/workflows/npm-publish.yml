@@ -1,6 +1,5 @@
 name: NPM Package Publish
-
-on:
+'on':
   workflow_call:
     secrets:
       npm-token:
@@ -9,16 +8,24 @@ on:
       build-command:
         type: string
         required: false
-        default: "npm run build"
+        default: npm run build
       test-command:
         type: string
         required: false
-        default: "npm test --if-present"
-      
+        default: npm test --if-present
+      generate-documentation-command:
+        required: false
+        type: string
+        default:  "npx --yes typedoc src/main.ts"
+        description: "The command that will be executed to generate documentation"
+      should-generate-documentation:
+        required: false
+        type: boolean
+        default: true
+        description: "Flag to determine if documentation should be generated"
         
 env:
   NODEJS_VERSION: 16.20.0
-
 jobs:
   check-is-version-updated:
     runs-on: ubuntu-latest
@@ -27,49 +34,55 @@ jobs:
       - uses: actions/setup-node@v3
       - id: check-is-version-updated
         uses: FreePhoenix888/is-npm-package-version-changed-github-action@0.0.6
-#       - id: check-is-version-updated
-#         run: |
-#           current_package_version=$(node -p "require('./package.json').version")
-#           npm_package_version=$(npm view @${{ github.repository }} version)
-
-#           if [ "${current_package_version}" == "${npm_package_version}" ]; then
-#               is_version_changed="false"
-#           else
-#               is_version_changed="true"
-#           fi
-#           echo "is-version-changed=${is_version_changed}" >> $GITHUB_OUTPUT
-
-      - run: echo ${{ steps.check-is-version-updated.outputs.is-version-changed }} 
+      - run: 'echo ${{ steps.check-is-version-updated.outputs.is-version-changed }}'
     outputs:
-      is-version-changed: ${{ steps.check-is-version-updated.outputs.is-version-changed }}
-  main:
+      is-version-changed: '${{ steps.check-is-version-updated.outputs.is-version-changed }}'
+  npm-publish:
     runs-on: ubuntu-latest
     needs:
       - check-is-version-updated
-    if: ${{ needs.check-is-version-updated.outputs.is-version-changed == 'true' }}
+    if: '${{ needs.check-is-version-updated.outputs.is-version-changed == ''true'' }}'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{env.NODE_VERSION}}
-          registry-url: https://registry.npmjs.org/
+          node-version: '${{env.NODE_VERSION}}'
+          registry-url: 'https://registry.npmjs.org/'
       - run: npm i -g npm@latest
       - run: npm clean-install
-      - run: ${{ inputs.build-command }} 
-      - run: ${{ inputs.test-command }}
+      - run: '${{ inputs.build-command }}'
+      - run: '${{ inputs.test-command }}'
       - uses: JS-DevTools/npm-publish@v1
         id: publish
         with:
-          token: ${{ secrets.npm-token }}
+          token: '${{ secrets.npm-token }}'
+  create-release:
+    runs-on: ubuntu-latest
+    needs:
+      - npm-publish
+    steps:
       - name: Create Github Release
-        if: steps.publish.outputs.type != 'none'
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
         with:
-          tag_name: ${{ steps.publish.outputs.version }}
-          release_name: Release ${{ steps.publish.outputs.version }}
-          body: ${{ steps.publish.outputs.version }}
+          tag_name: '${{ steps.publish.outputs.version }}'
+          release_name: 'Release ${{ steps.publish.outputs.version }}'
+          body: '${{ steps.publish.outputs.version }}'
           draft: false
           prerelease: false
+  generate-documentation:
+    runs-on: ubuntu-latest
+    needs:
+      - npm-publish
+    if: ${{ inputs.should-generate-documentation }}
+    steps:
+      - name: Generate Documentation
+        id: generate-docs
+        run: '${{ inputs.generate-documentation-command }}'
+      - name: Deploy Documentation to Github Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: docs

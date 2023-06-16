@@ -37,7 +37,7 @@ jobs:
       - run: 'echo ${{ steps.check-is-version-updated.outputs.is-version-changed }}'
     outputs:
       is-version-changed: '${{ steps.check-is-version-updated.outputs.is-version-changed }}'
-  npm-publish:
+  publish:
     runs-on: ubuntu-latest
     needs:
       - check-is-version-updated
@@ -56,10 +56,13 @@ jobs:
         id: publish
         with:
           token: '${{ secrets.npm-token }}'
+    outputs:
+      new-version: '${{ steps.publish.outputs.version }}'
+        
   create-release:
     runs-on: ubuntu-latest
     needs:
-      - npm-publish
+      - publish
     steps:
       - name: Create Github Release
         id: create_release
@@ -67,15 +70,15 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
         with:
-          tag_name: '${{ steps.publish.outputs.version }}'
-          release_name: 'Release ${{ steps.publish.outputs.version }}'
-          body: '${{ steps.publish.outputs.version }}'
+          tag_name: '${{ needs.publish.outputs.new-version }}'
+          release_name: 'Release ${{ steps.publish.outputs.new-version }}'
+          body: '${{ needs.publish.outputs.new-version }}'
           draft: false
           prerelease: false
   generate-documentation:
     runs-on: ubuntu-latest
     needs:
-      - npm-publish
+      - publish
     if: ${{ inputs.should-generate-documentation }}
     steps:
       - name: Generate Documentation

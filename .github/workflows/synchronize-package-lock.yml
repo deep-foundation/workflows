@@ -1,0 +1,31 @@
+name: Synchronize package-lock.json
+
+on:
+  workflow_call:
+  
+env:
+  NODEJS_VERSION: 16.20.0
+  
+jobs:
+  synchronize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '${{env.NODEJS_VERSION}}'
+      - run: npm i -g npm@latest
+      - run: npm install
+      - name: Check for changes
+        id: check-is-package-lock-changed
+        uses: tj-actions/changed-files@v5
+        with:
+          files: 'package-lock.json'
+      - name: Commit changes
+        if: steps.check-is-package-lock-changed.outputs.files_changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Sync package-lock.json"
+          commit_user_name: "github-actions"
+          commit_user_email: "github-actions@github.com"
+          commit_author: "GitHub Actions <github-actions@github.com>"

@@ -85,6 +85,7 @@ jobs:
         with:
           node-version: '${{env.NODE_VERSION}}'
       - run: npm i -g npm@latest
+      - run: npm clean-install
       - name: Generate Documentation
         id: generate-docs
         run: '${{ inputs.generate-documentation-command }}'

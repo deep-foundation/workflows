@@ -2,6 +2,15 @@ name: NPM Test
 
 on:
   workflow_call:
+    inputs:
+      build-command:
+        type: string
+        required: false
+        default: npm run build
+      test-command:
+        type: string
+        required: false
+        default: npm test --if-present
   
 env:
   NODEJS_VERSION: 16.20.0
@@ -16,4 +25,5 @@ jobs:
           node-version: ${{ env.NODEJS_VERSION }}
       - run: npm i -g npm@latest
       - run: npm clean-install
-      - run: npm run test --if-present
+      - run: ${{ inputs.build-command }}
+      - run: ${{ inputs.test-command }} 

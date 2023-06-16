@@ -18,11 +18,10 @@ jobs:
       - run: npm install
       - name: Check for changes
         id: check-is-package-lock-changed
-        uses: tj-actions/changed-files@v5
-        with:
-          files: 'package-lock.json'
+        run: |
+          git diff --quiet package-lock.json && echo "is-package-lock-json-changed=false" >> $GITHUB_OUTPUT || echo "is-package-lock-json-changed=true" >> $GITHUB_OUTPUT
       - name: Commit changes
-        if: steps.check-is-package-lock-changed.outputs.files_changed == 'true'
+        if: steps.check-is-package-lock-changed.outputs.is-package-lock-json-changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Sync package-lock.json"

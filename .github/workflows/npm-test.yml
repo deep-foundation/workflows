@@ -16,7 +16,7 @@ env:
   NODEJS_VERSION: 16.20.0
 
 jobs:
-  publish:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

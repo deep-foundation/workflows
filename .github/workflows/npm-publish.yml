@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '${{env.NODE_VERSION}}'
+          node-version: '${{env.NODEJS_VERSION}}'
       - run: npm i -g npm@latest
       - run: npm clean-install
       - run: '${{ inputs.build-command }}'
@@ -83,7 +83,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '${{env.NODE_VERSION}}'
+          node-version: '${{env.NODEJS_VERSION}}'
       - run: npm i -g npm@latest
       - run: npm clean-install
       - name: Generate Documentation

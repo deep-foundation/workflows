@@ -47,7 +47,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '${{env.NODE_VERSION}}'
-          registry-url: 'https://registry.npmjs.org/'
       - run: npm i -g npm@latest
       - run: npm clean-install
       - run: '${{ inputs.build-command }}'
@@ -81,6 +80,11 @@ jobs:
       - publish
     if: ${{ inputs.should-generate-documentation }}
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '${{env.NODE_VERSION}}'
+      - run: npm i -g npm@latest
       - name: Generate Documentation
         id: generate-docs
         run: '${{ inputs.generate-documentation-command }}'

@@ -25,7 +25,7 @@ name: NPM Package Publish
         description: "Flag to determine if documentation should be generated"
         
 env:
-  NODEJS_VERSION: 16.20.0
+  NODEJS_VERSION: 18.16.1
 jobs:
   check-is-version-updated:
     runs-on: ubuntu-latest

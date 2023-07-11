@@ -6,11 +6,11 @@ on:
       build-command:
         type: string
         required: false
-        default: npm run package:build
+        default: ${{ vars.NPM_BUILD_COMMAND }}
       test-command:
         type: string
         required: false
-        default: npm test --if-present
+        default: ${{ vars.NPM_TEST_COMMAND }}
   
 jobs:
   test:

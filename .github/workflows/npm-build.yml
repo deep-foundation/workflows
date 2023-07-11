@@ -1,0 +1,24 @@
+name: NPM Build
+
+on:
+  workflow_call:
+    inputs:
+      build-command:
+        type: string
+        required: false
+        default: npm run build
+  
+env:
+  NODEJS_VERSION: 18.16.1
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODEJS_VERSION }}
+      - run: npm i -g npm@latest
+      - run: npm clean-install
+      - run: ${{ inputs.build-command }}

@@ -12,9 +12,6 @@ on:
         required: false
         default: npm test --if-present
   
-env:
-  NODEJS_VERSION: 18.16.1
-
 jobs:
   test:
     runs-on: ubuntu-latest

@@ -21,7 +21,7 @@ name: NPM Package Publish
       should-generate-documentation:
         required: false
         type: boolean
-        default: ${{ vars.SHOULD_GENERATE_DOCUMENTATION }}
+        default: ${{ vars.SHOULD_GENERATE_DOCUMENTATION == 'true' }}
         description: "Flag to determine if documentation should be generated"
         
 jobs:

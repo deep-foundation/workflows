@@ -1,10 +1,25 @@
-name: Npm Build
+name: NPM Build
 
 on:
-  pull_request:
-    types: [opened, reopened, edited, synchronize]
-  workflow_dispatch:
-
+  workflow_call:
+    inputs:
+      build-command:
+        type: string
+        required: false
+        default: ${{ vars.NPM_BUILD_COMMAND }}
+      nodejs-version:
+        type: string
+        required: false
+        default: ${{ vars.NODEJS_VERSION }}
+  
 jobs:
-  main:
-    uses: deep-foundation/workflows/.github/workflows/npm-build.yml@main
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.nodejs-version }}
+      - run: npm i -g npm@latest
+      - run: npm clean-install
+      - run: ${{ inputs.build-command }}

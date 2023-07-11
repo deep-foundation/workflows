@@ -6,7 +6,7 @@ on:
       build-command:
         type: string
         required: false
-        default: npm run build
+        default: ${{ env.NPM_BUILD_COMMAND }}
       test-command:
         type: string
         required: false

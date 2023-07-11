@@ -6,7 +6,7 @@ on:
       build-command:
         type: string
         required: false
-        default: npm run package:build
+        default: ${{ vars.NPM_BUILD_COMMAND }}
   
 jobs:
   test:

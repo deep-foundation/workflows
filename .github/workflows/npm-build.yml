@@ -8,9 +8,6 @@ on:
         required: false
         default: npm run build
   
-env:
-  NODEJS_VERSION: 18.16.1
-
 jobs:
   test:
     runs-on: ubuntu-latest

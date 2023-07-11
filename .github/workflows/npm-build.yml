@@ -7,6 +7,10 @@ on:
         type: string
         required: false
         default: ${{ vars.NPM_BUILD_COMMAND }}
+      nodejs-version:
+        type: string
+        required: false
+        default: ${{ vars.NODEJS_VERSION }}
   
 jobs:
   test:
@@ -15,7 +19,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODEJS_VERSION }}
+          node-version: ${{ inputs.nodejs-version }}
       - run: npm i -g npm@latest
       - run: npm clean-install
       - run: ${{ inputs.build-command }}

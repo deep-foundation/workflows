@@ -8,24 +8,22 @@ name: NPM Package Publish
       build-command:
         type: string
         required: false
-        default: npm run build
+        default: ${{ vars.NPM_BUILD_COMMAND }}
       test-command:
         type: string
         required: false
-        default: npm test --if-present
+        default: ${{ vars.NPM_TEST_COMMAND }}
       generate-documentation-command:
         required: false
         type: string
-        default:  "npx --yes typedoc src/main.ts"
+        default:  ${{ vars.GENERATE_DOCUMENTATION_COMMAND }}
         description: "The command that will be executed to generate documentation"
       should-generate-documentation:
         required: false
         type: boolean
-        default: true
+        default: ${{ vars.SHOULD_GENERATE_DOCUMENTATION }}
         description: "Flag to determine if documentation should be generated"
         
-env:
-  NODEJS_VERSION: 18.16.1
 jobs:
   check-is-version-updated:
     runs-on: ubuntu-latest

@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - id: check-is-version-updated
-        uses: FreePhoenix888/is-npm-package-version-changed-github-action@0.0.6
+        uses: FreePhoenix888/is-npm-package-version-changed-github-action@0.0.7
       - run: 'echo ${{ steps.check-is-version-updated.outputs.is-version-changed }}'
     outputs:
       is-version-changed: '${{ steps.check-is-version-updated.outputs.is-version-changed }}'

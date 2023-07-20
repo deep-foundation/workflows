@@ -54,6 +54,12 @@ jobs:
         id: generate-docs
         run: '${{ inputs.generate-documentation-command }}'
         if: ${{ inputs.should-generate-documentation }}
+      - name: Deploy Documentation to Github Pages
+        if: ${{ inputs.should-generate-documentation }}
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: "gh-pages"
+          folder: "docs"
       - uses: JS-DevTools/npm-publish@v1
         id: publish
         with:

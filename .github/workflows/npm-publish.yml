@@ -67,7 +67,5 @@ jobs:
           tag_name: '${{ steps.publish.outputs.version }}'
           release_name: 'Release ${{ steps.publish.outputs.version }}'
           body: '${{ steps.publish.outputs.version }}'
-          draft: false
-          prerelease: false
     outputs:
       new-version: '${{ steps.publish.outputs.version }}'

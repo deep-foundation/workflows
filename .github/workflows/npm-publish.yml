@@ -8,20 +8,20 @@ name: NPM Package Publish
       build-command:
         type: string
         required: false
-        default: ${{ vars.NPM_BUILD_COMMAND }}
+        default: "npm run build"
       test-command:
         type: string
         required: false
-        default: ${{ vars.NPM_TEST_COMMAND }}
+        default: "npm run test --if-present"
       generate-documentation-command:
         required: false
         type: string
-        default:  ${{ vars.GENERATE_DOCUMENTATION_COMMAND }}
+        default:  "npx --yes typedoc ./src/main.ts"
         description: "The command that will be executed to generate documentation"
       should-generate-documentation:
         required: false
         type: boolean
-        default: ${{ vars.SHOULD_GENERATE_DOCUMENTATION == 'true' }}
+        default: true
         description: "Flag to determine if documentation should be generated"
         
 jobs:

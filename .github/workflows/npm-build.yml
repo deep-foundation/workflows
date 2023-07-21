@@ -6,11 +6,11 @@ on:
       build-command:
         type: string
         required: false
-        default: ${{ vars.NPM_BUILD_COMMAND }}
+        default: "npm run build"
       nodejs-version:
         type: string
         required: false
-        default: ${{ vars.NODEJS_VERSION }}
+        default: "18.16.1"
   
 jobs:
   main:

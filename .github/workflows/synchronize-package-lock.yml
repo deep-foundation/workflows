@@ -4,7 +4,7 @@ on:
   workflow_call:
   
 env:
-  NODEJS_VERSION: 18.16.1
+  NODEJS_VERSION: 18
   
 jobs:
   synchronize:

@@ -53,12 +53,15 @@ jobs:
           node-version: '${{inputs.nodejs-version}}'
       - run: npm clean-install
       - run: '${{ inputs.build-command }}'
+        name: "Build"
       - run: '${{ inputs.test-command }}'
+        name: "Test"
       - name: Generate Documentation
         id: generate-docs
         run: '${{ inputs.generate-documentation-command }}'
         if: ${{ inputs.should-generate-documentation }}
       - uses: JS-DevTools/npm-publish@v1
+        name: "Publish"
         id: publish
         with:
           token: '${{ secrets.npm-token }}'

@@ -20,6 +20,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ inputs.nodejs-version }}
-      - run: npm i -g npm@latest
+      - run: npm i -g npm@7
       - run: npm clean-install
       - run: ${{ inputs.build-command }}
